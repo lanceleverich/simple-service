@@ -68,7 +68,6 @@ public class SLAViolationHandler extends DefaultProcessEventListener {
 		System.out.println("***** SLA Violated Action ***** NODE: " + event.getNodeInstance().getNodeName() + " ACTION "
 				+ slaInfo.getAction());
 		
-		nii.getWorkItem();
 		// cancel de work item
 		switch (slaInfo.getAction()) {
 		case AUTO:
@@ -76,20 +75,25 @@ public class SLAViolationHandler extends DefaultProcessEventListener {
 				nii.cancel();
 				event.getKieRuntime().signalEvent(slaInfo.getRetrySignalName(), event,
 						event.getProcessInstance().getId());
+//				event.getKieRuntime().getWorkItemManager().abortWorkItem(nii.getWorkItemId());
 				
 			} else {
-				System.out.println(event.getNodeInstance().getNodeName() + " MAXIMUM RETRIES REACHED");
+				System.out.println(event.getNodeInstance().getNodeName() + " MAXIMUM RETRIES REACHED, WAITING");
 			}
 			break;
 		case ABORTPROC:
+			// cancel the task and the process. It should not follow the current path
 			nii.cancel();
 			event.getKieRuntime().abortProcessInstance(slaInfo.getProcessId());
 			break;
 		case SKIP: // NONE
+			// abort the current wih
 			nii.cancel();
+			event.getKieRuntime().getWorkItemManager().abortWorkItem(nii.getWorkItemId());
 			break;
 		case WAIT:
-			// we do nothing
+			// we do nothing and wait
+			nii.cancel();
 			break;
 		}
 

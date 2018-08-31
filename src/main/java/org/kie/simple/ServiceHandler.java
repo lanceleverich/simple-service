@@ -28,7 +28,7 @@ public class ServiceHandler extends AbstractWorkItemHandler {
 	}
 
 	public void executeWorkItem(WorkItem workItem, WorkItemManager manager) {
-		System.out.println("Start of parameters!");
+		System.out.println("EXECUTING WORKITEM " + workItem.getId());
 		workItem.getParameters().keySet().forEach(key -> {
 			System.out.println(key + ": " + workItem.getParameter(key));
 		});
@@ -54,6 +54,7 @@ public class ServiceHandler extends AbstractWorkItemHandler {
 	}
 
 	public void abortWorkItem(WorkItem workItem, WorkItemManager manager) {
+		System.out.println("CANCELLING WORKITEM " + workItem.getId());
 		// stop the work
 		threads.remove(workItem.getId()).interrupt();
 	}
