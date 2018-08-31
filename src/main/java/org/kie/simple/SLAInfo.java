@@ -11,6 +11,7 @@ public class SLAInfo implements Serializable {
 	private Integer maxRetries;
 	private Long processId;
 	private Long nodeInstanceId;
+	private Long workItemId;
 	
 	public SLAInfo(Long processId, Long nodeInstanceId) {
 		super();
@@ -20,16 +21,18 @@ public class SLAInfo implements Serializable {
 	
 	public SLAInfo(Long processId, 
 			Long nodeInstanceId, 
-			String action, 
-			String timerMode, 
+			Long workItemId,
+			ViolationAction action, 
+			TimerMode timerMode, 
 			String slaGroupId, 
 			Integer maxRetries,
 			String retrySignalName) {
 		super();
 		this.processId = processId;
 		this.nodeInstanceId = nodeInstanceId;
-		this.action = ViolationAction.valueOf(action);
-		this.timerMode = TimerMode.valueOf(timerMode);
+		this.workItemId = workItemId;
+		this.action = action;
+		this.timerMode = timerMode;
 		this.slaGroupId = slaGroupId;
 		this.maxRetries = maxRetries;
 		this.retrySignalName = retrySignalName;
@@ -145,6 +148,15 @@ public class SLAInfo implements Serializable {
 				+ ", retrySignalName=" + retrySignalName + ", maxRetries=" + maxRetries + ", processId=" + processId
 				+ ", nodeInstanceId=" + nodeInstanceId + "]";
 	}
+
+	public Long getWorkItemId() {
+		return workItemId;
+	}
+
+	public void setWorkItemId(Long workItemId) {
+		this.workItemId = workItemId;
+	}
+
 
 	
 }
